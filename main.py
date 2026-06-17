@@ -19,6 +19,10 @@ def convert(from_currency: str, to_currency: str, amount: float):
     URL = f"https://v6.exchangerate-api.com/v6/{API_KEY}/latest/{from_currency}"
     response = requests.get(URL)
     data = response.json()
+    
+    if data.get("result") != "success":
+        return {"error": data}
+    
     exchange_rate = data["conversion_rates"][to_currency]
     converted_amount = amount * exchange_rate
     return {"from": from_currency, "to": to_currency, "amount": amount, "converted": converted_amount}
